@@ -1,0 +1,3 @@
+/Users/wkh_11/Desktop/csc 173 proj 1/cmake-build-debug/CMakeFiles/untitled.dir
+/Users/wkh_11/Desktop/csc 173 proj 1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/wkh_11/Desktop/csc 173 proj 1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

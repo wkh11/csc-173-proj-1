@@ -110,18 +110,23 @@ void DFA_set_transition(DFA dfa, int sourceState, char input, int destinationSta
  * This is a nice shortcut when you have multiple labels on an edge between
  * two states.
  */
-void DFA_set_transition_str(DFA dfa, int currState, char *string, int destinationState) {
-
+void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
+    int currentState = src;
+    for (int i = 0; str[i] != '\0'; i++) {
+        char input = str[i];
+        DFA_set_transition(dfa, currentState, input, dst);
+        currentState = dst;  // Updates the current state for the next iteration
+    }
 }
-
 /**
  * Set the transitions of the given DFA for all input symbols.
  * Another shortcut method.
  */
 void DFA_set_transition_all(DFA dfa, int src, int dst) {
-
+    // Iterates through all possible input symbols (all the ASCII values 0 to 127)
+    for (int input = 0; input < 128; input++) {
+        DFA_set_transition(dfa, src, (char)input, dst);
+    }
 }
-
-
 
 

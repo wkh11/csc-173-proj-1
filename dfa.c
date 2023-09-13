@@ -158,7 +158,19 @@ bool DFA_get_accepting(DFA dfa, int state) {
 }
 
 bool DFA_execute(DFA dfa, char *input) {
-
+    int currentState = dfa->startOrCurrState;
+    for (int i = 0; input[i] != '\0'; i++) {
+        char currentSymbol = input[i];
+        // Get the next state based on the current state and input symbol
+        int nextState = DFA_get_transition(dfa, currentState, currentSymbol);
+        // If the transition leads to an invalid state, reject the input
+        if (nextState == -1) {
+            return false;
+        }
+        currentState = nextState; // Move to the next state
+    }
+    // Check if the final state is an accepting state
+    return DFA_get_accepting(dfa, currentState);
 }
 
 

@@ -173,6 +173,58 @@ bool DFA_execute(DFA dfa, char *input) {
     return DFA_get_accepting(dfa, currentState);
 }
 
+DFA DFA_for_contains_CSC() {
+    DFA dfa = new_DFA(4); // 4 states for this DFA
+    // Define transitions for the DFA
+    DFA_set_transition_str(dfa, 0, "C", 1);
+    DFA_set_transition_str(dfa, 1, "S", 2);
+    DFA_set_transition_str(dfa, 2, "C", 3);
+    // Set the accepting state
+    DFA_set_accepting(dfa, 3, true);
+    return dfa;
+}
+
+DFA DFA_for_contains_end() {
+    DFA dfa = new_DFA(5); // 5 states for this DFA
+    // Define transitions for the DFA
+    DFA_set_transition_str(dfa, 0, "e", 1);
+    DFA_set_transition_str(dfa, 1, "n", 2);
+    DFA_set_transition_str(dfa, 2, "d", 3);
+    // Loop back to the start state for more occurrences of "end"
+    DFA_set_transition_str(dfa, 3, "e", 1);
+    // Set the accepting state
+    DFA_set_accepting(dfa, 3, true);
+    return dfa;
+}
+
+DFA DFA_for_starts_with_vowel() {
+    DFA dfa = new_DFA(2); // 2 states for this DFA
+    // Define transitions for the DFA
+    DFA_set_transition(dfa, 0, 'a', 1);
+    DFA_set_transition(dfa, 0, 'e', 1);
+    DFA_set_transition(dfa, 0, 'i', 1);
+    DFA_set_transition(dfa, 0, 'o', 1);
+    DFA_set_transition(dfa, 0, 'u', 1);
+    // Set the accepting state
+    DFA_set_accepting(dfa, 1, true);
+    return dfa;
+}
+
+DFA DFA_for_even_count() {
+    DFA dfa = new_DFA(4); // 4 states for this DFA
+    // Define transitions for the DFA
+    DFA_set_transition(dfa, 0, '0', 1);
+    DFA_set_transition(dfa, 0, '1', 2);
+    DFA_set_transition(dfa, 1, '0', 0);
+    DFA_set_transition(dfa, 1, '1', 3);
+    DFA_set_transition(dfa, 2, '0', 3);
+    DFA_set_transition(dfa, 2, '1', 0);
+    DFA_set_transition(dfa, 3, '0', 2);
+    DFA_set_transition(dfa, 3, '1', 1);
+    // Set the accepting state
+    DFA_set_accepting(dfa, 0, true);
+    return dfa;
+}
 
 
 

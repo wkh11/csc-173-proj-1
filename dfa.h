@@ -33,6 +33,13 @@ extern void DFA_set_transition_str(DFA dfa, int src, char *str, int dst);
 
 extern void DFA_set_transition_all(DFA dfa, int src, int dst);
 
+extern void DFA_set_accepting(DFA dfa, int state, bool value);
+
+extern bool DFA_get_accepting(DFA dfa, int state);
+
+extern bool DFA_execute(DFA dfa, char *input);
+
+
 
 
 #endif //UNTITLED_DFA_H

@@ -14,7 +14,6 @@ struct DFA {
     int nStates;
     //126 to represent the ascii alphabet, which encompasses every possible keyboard letter
     int startOrCurrState;
-    int acceptingState;
     DFA_State states;
 };
 //relationship: DFA defines # of states, startingState. DFA_State is the transition table
@@ -24,6 +23,7 @@ struct DFA_State {
         //transitionTable[number of states][all the ascii values go here. if not val we are looking for, set as -1]
     //each state has following information: where it can go next.
     //if it is the accepting state
+    bool isAcceptingState;
     int inputAlphabet[10];
 };
 
@@ -39,9 +39,15 @@ DFA new_DFA(int nStates) {
 
     this->nStates = nStates;
     this->startOrCurrState = 0;
-    this->acceptingState = 10;
     //allows us to free space for DFA_State
     this->states = (DFA_State)malloc(sizeof(struct DFA_State));
+//    this->states->acceptingState = 10;
+
+    for (int i = 0; i < nStates; i++) {
+        //base case: initialize all current states to false
+        this->states[i].isAcceptingState = false;
+    }
+
     //psuedo code
         // at each state, n, set each of the values to false
     for (int i = 0; i < nStates; i++) {
@@ -114,10 +120,13 @@ void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
     int currentState = src;
     for (int i = 0; str[i] != '\0'; i++) {
         char input = str[i];
-        DFA_set_transition(dfa, currentState, input, dst);
-        currentState = dst;  // Updates the current state for the next iteration
+        //edit made by wei: we do "dst + 1" because for ex: at state 0, if the pattern "csc" if input = c, it should transition to dst+1
+        //which means state is accepted, now go to next state
+        DFA_set_transition(dfa, currentState, input, dst+1);
+        currentState = dst+1;  // Updates the current state for the next iteration
     }
 }
+
 /**
  * Set the transitions of the given DFA for all input symbols.
  * Another shortcut method.
@@ -127,6 +136,31 @@ void DFA_set_transition_all(DFA dfa, int src, int dst) {
     for (int input = 0; input < 128; input++) {
         DFA_set_transition(dfa, src, (char)input, dst);
     }
+    //always run this method first before set_transition_str -> this assigns every value in the row the same val.
+    //so on row 0, every value is assigned 0
 }
+
+/**
+ * Set whether the given DFA's state is accepting or not.
+ */
+void DFA_set_accepting(DFA dfa, int acceptingState, bool value) {
+    //here, we must go into the final state and set it equal to the final state number so that if it is reached, we return true
+    //value = final state number
+    dfa->states[acceptingState].isAcceptingState = value;
+}
+
+/**
+ * Return true if the given DFA's state is an accepting state.
+ */
+bool DFA_get_accepting(DFA dfa, int state) {
+    //given the dfa, and the current state, we check if that state was assigned to be the accepting_state
+    return dfa->states[state].isAcceptingState;
+}
+
+bool DFA_execute(DFA dfa, char *input) {
+
+}
+
+
 
 

@@ -226,5 +226,20 @@ DFA DFA_for_even_count() {
     return dfa;
 }
 
+//read-eval-print-loop
+void DFA_repl(DFA dfa) {
+    char input[256]; // Assuming a maximum input length of 255 characters
+    while (1) {
+        printf("Enter an input string (or 'exit' to quit): ");
+        fgets(input, sizeof(input), stdin);
+        input[strlen(input) - 1] = '\0'; // Remove the newline character
+        if (strcmp(input, "exit") == 0) {
+            break; // Exit the REPL
+        }
+        bool result = DFA_execute(dfa, input);
+        printf("Result: %s\n", result ? "Accept" : "Reject");
+    }
+}
+
 
 
